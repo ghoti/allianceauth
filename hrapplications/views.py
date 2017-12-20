@@ -39,8 +39,8 @@ def hr_application_management_view(request):
         except EveCharacter.DoesNotExist:
             pass
     if request.user.is_superuser:
-        corp_applications = Application.objects.filter(approved=None)
-        finished_corp_applications = Application.objects.exclude(approved=None)
+        corp_applications = Application.objects.filter(approved=None).order_by('-created')
+        finished_corp_applications = Application.objects.exclude(approved=None).order_by('-created')
     elif request.user.has_perm('auth.human_resources') and main_char:
         if ApplicationForm.objects.filter(corp__corporation_id=main_char.corporation_id).exists():
             app_form = ApplicationForm.objects.get(corp__corporation_id=main_char.corporation_id)
